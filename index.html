@@ -1,26 +1,213 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Globo caliente</title>
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+  <title>Kevin Natera — Desarrollador Full-Stack</title>
+  <meta name="description" content="Soy Kevin Natera, desarrollador full-stack. Hago webs y apps con Angular, Flutter y Django. Pasa y echa un vistazo." />
+  <meta name="theme-color" content="#0b0a09" />
+  <meta property="og:title" content="Kevin Natera — Desarrollador Full-Stack" />
+  <meta property="og:description" content="Un portafolio en pixel art: métete en la pantalla y cotillea mi experiencia como si fuera código." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="assets/fonts/pixelify-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body id="container">
+<body class="is-booting">
 
-    <h1>Haz que el globo explote</h1>
-    <p class="instructions">Antes de explotar el globo, asegúrate de usar tapones para los oídos y no te asustes.</p>
+  <!-- ============ PANTALLA DE ARRANQUE ============ -->
+  <div id="boot" role="dialog" aria-modal="true" aria-labelledby="boot-title">
+    <div class="boot-inner">
+      <div class="boot-logo" aria-hidden="true">
+        <span>K</span><span>N</span>
+      </div>
+      <h1 id="boot-title" class="boot-title">Kevin Natera</h1>
+      <p class="boot-sub">Full-Stack Developer · webs y apps</p>
+      <div class="boot-log" id="boot-log" aria-live="polite"></div>
+      <div class="boot-bar"><i id="boot-bar"></i></div>
+      <div class="boot-actions" id="boot-actions" hidden>
+        <button class="px-btn px-btn--primary" id="enter-sound" autofocus>
+          <span class="ico" data-icon="sound"></span> Entrar con sonido
+        </button>
+        <button class="px-btn" id="enter-mute">Entrar sin sonido</button>
+      </div>
+      <p class="boot-hint" id="boot-hint" hidden>Mejor con auriculares · <kbd>Enter</kbd></p>
+    </div>
+  </div>
 
-    <button id="fire">
-        <img src="burst-balloon.png" alt="ballon">
-    </button>
+  <!-- ============ ESCENARIO FIJO ============ -->
+  <div id="stage">
+    <!-- IDE real (debajo del canvas; aparece al disolverse la escena) -->
+    <div id="ide" class="ide" aria-hidden="true" inert>
+      <header class="ide-titlebar">
+        <div class="tb-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+        <nav class="tb-menu" aria-label="Menú">
+          <button data-cmd="palette">Archivo</button>
+          <button data-cmd="palette">Ir</button>
+          <button data-cmd="terminal">Terminal</button>
+          <button data-cmd="help">Ayuda</button>
+        </nav>
+        <div class="tb-title"><span class="ico" data-icon="logo"></span> <b>kevin-natera</b> <span class="tb-sep">—</span> <span id="tb-file">Bienvenida</span></div>
+        <div class="tb-actions">
+          <button class="tb-btn" data-cmd="palette" title="Ir a archivo (Ctrl+P)"><span class="ico" data-icon="search"></span><span class="lbl">Ctrl P</span></button>
+          <button class="tb-btn sound-toggle" data-cmd="sound" title="Sonido"><span class="ico" data-icon="sound"></span></button>
+          <button class="tb-btn tb-exit" data-cmd="exit" title="Volver a la habitación"><span class="ico" data-icon="exit"></span><span class="lbl">Salir</span></button>
+        </div>
+      </header>
 
-    <pre id="responseBox" hidden></pre>
+      <div class="ide-body">
+        <nav class="activity" aria-label="Paneles">
+          <button class="act is-active" data-panel="explorer" title="Explorador (Ctrl+B)"><span class="ico" data-icon="files"></span></button>
+          <button class="act" data-panel="search" title="Buscar (Ctrl+Shift+F)"><span class="ico" data-icon="search"></span></button>
+          <button class="act" data-panel="git" title="Control de versiones — trayectoria"><span class="ico" data-icon="git"></span><em class="badge">4</em></button>
+          <button class="act" data-panel="ext" title="Extensiones — habilidades"><span class="ico" data-icon="ext"></span></button>
+          <span class="act-spacer"></span>
+          <button class="act" data-cmd="terminal" title="Terminal (Ctrl+J)"><span class="ico" data-icon="term"></span></button>
+          <button class="act sound-toggle" data-cmd="sound" title="Sonido"><span class="ico" data-icon="sound"></span></button>
+        </nav>
 
-    <div class="count-down">
-        <h3 id="count"></h3>
+        <aside class="sidebar" id="sidebar">
+          <section class="panel is-active" data-panel="explorer">
+            <h2 class="panel-title">Explorador</h2>
+            <div class="tree-head"><span class="ico" data-icon="chev"></span> PORTAFOLIO</div>
+            <ul class="tree" id="tree" role="tree"></ul>
+            <div class="tree-head tree-head--sub"><span class="ico" data-icon="chev"></span> ESQUEMA</div>
+            <ul class="outline" id="outline"></ul>
+          </section>
+          <section class="panel" data-panel="search">
+            <h2 class="panel-title">Buscar</h2>
+            <div class="search-box"><input id="search-input" type="search" placeholder="Buscar (ej. Flutter)" autocomplete="off" spellcheck="false" /></div>
+            <div class="search-meta" id="search-meta">Escribe para buscar en todos los archivos.</div>
+            <ul class="search-results" id="search-results"></ul>
+          </section>
+          <section class="panel" data-panel="git">
+            <h2 class="panel-title">Control de versiones</h2>
+            <div class="git-box">
+              <textarea disabled placeholder="Mensaje (Ctrl+Enter para contratarme)"></textarea>
+              <a class="px-btn px-btn--primary px-btn--block" id="git-hire" href="#">✓ Commit y escríbeme</a>
+            </div>
+            <div class="tree-head"><span class="ico" data-icon="chev"></span> HISTORIAL · main</div>
+            <ol class="git-log" id="git-log"></ol>
+          </section>
+          <section class="panel" data-panel="ext">
+            <h2 class="panel-title">Extensiones</h2>
+            <div class="tree-head"><span class="ico" data-icon="chev"></span> INSTALADAS · <span id="ext-count"></span></div>
+            <ul class="ext-list" id="ext-list"></ul>
+          </section>
+        </aside>
+        <div class="sidebar-scrim" id="sidebar-scrim"></div>
+
+        <main class="main">
+          <div class="tabs" id="tabs" role="tablist"></div>
+          <div class="toolbar">
+            <div class="crumbs" id="crumbs"></div>
+            <div class="tool-actions" id="tool-actions">
+              <button class="tool-btn" id="btn-preview" hidden>Vista previa</button>
+              <button class="tool-btn tool-btn--run" id="btn-run" hidden>▶ Ejecutar</button>
+            </div>
+          </div>
+          <div class="editor-wrap">
+            <div class="editor" id="editor" tabindex="0" aria-label="Editor de código"></div>
+            <canvas class="minimap" id="minimap" width="60" height="400" aria-hidden="true"></canvas>
+          </div>
+
+          <section class="terminal" id="terminal">
+            <div class="term-head">
+              <div class="term-tabs">
+                <span class="is-active">Terminal</span><span>Problemas <em>0</em></span><span class="hide-sm">Salida</span>
+              </div>
+              <div class="term-actions">
+                <button data-cmd="clear" title="Limpiar">⌫</button>
+                <button data-cmd="terminal" title="Cerrar panel">✕</button>
+              </div>
+            </div>
+            <div class="term-body" id="term-body">
+              <div class="term-out" id="term-out"></div>
+              <label class="term-line">
+                <span class="term-prompt">kevin@portfolio:<b>~</b>$</span>
+                <input id="term-input" autocomplete="off" spellcheck="false" aria-label="Terminal" />
+              </label>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <footer class="statusbar">
+        <span class="sb-item sb-branch"><span class="ico" data-icon="git"></span> main</span>
+        <span class="sb-item hide-sm">⊗ 0 ⚠ 0</span>
+        <span class="sb-item sb-avail"><i></i> Abierto a nuevos proyectos</span>
+        <span class="sb-flex"></span>
+        <span class="sb-item hide-sm" id="sb-pos">Ln 1, Col 1</span>
+        <span class="sb-item hide-sm">UTF-8</span>
+        <span class="sb-item" id="sb-lang">Bienvenida</span>
+        <button class="sb-item sound-toggle" data-cmd="sound"><span class="ico" data-icon="sound"></span></button>
+      </footer>
+
+      <!-- Paleta de comandos -->
+      <div class="palette" id="palette" hidden>
+        <div class="palette-box" role="dialog" aria-label="Ir a archivo">
+          <input id="palette-input" placeholder="Buscar archivos por nombre · escribe > para comandos" autocomplete="off" spellcheck="false" />
+          <ul id="palette-list"></ul>
+        </div>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      <div class="crt" aria-hidden="true"></div>
     </div>
 
-    <script src="script.js"></script>
+    <canvas id="scene" aria-hidden="true"></canvas>
+    <div class="fx-vignette" aria-hidden="true"></div>
+    <div class="fx-grain" id="fx-grain" aria-hidden="true"></div>
+    <div class="fx-flash" id="fx-flash" aria-hidden="true"></div>
+
+    <!-- HUD de la escena -->
+    <header class="hud" id="hud">
+      <a class="hud-brand" href="#" aria-label="Inicio">
+        <span class="hud-logo">KN</span>
+        <span class="hud-name">Kevin Natera<small>Full-Stack Developer</small></span>
+      </a>
+      <div class="hud-actions">
+        <button class="hud-btn sound-toggle" data-cmd="sound" aria-label="Sonido"><span class="ico" data-icon="sound"></span><span class="lbl sound-lbl">Sonido</span></button>
+        <button class="hud-btn" id="skip" aria-label="Saltar la intro">Saltar intro <span aria-hidden="true">↓</span></button>
+      </div>
+    </header>
+
+    <section class="hero" id="hero">
+      <p class="hero-kicker"><span class="dot"></span> Abierto a proyectos · España</p>
+      <h2 class="hero-title">Hola, soy Kevin.<br />Hago <em>webs y apps</em> de principio a fin.</h2>
+      <p class="hero-sub">Angular · Flutter · Django REST · Laravel</p>
+    </section>
+
+    <div class="scroll-hint" id="scroll-hint" aria-hidden="true">
+      <span class="mouse"><i></i></span>
+      <span>Baja para meterte en la pantalla</span>
+    </div>
+
+    <ol class="rail" id="rail" aria-hidden="true">
+      <li data-step="0"><i></i><span>01 · Setup</span></li>
+      <li data-step="1"><i></i><span>02 · Zoom</span></li>
+      <li data-step="2"><i></i><span>03 · Código</span></li>
+    </ol>
+  </div>
+
+  <!-- Recorrido de scroll -->
+  <div id="scroll-track" aria-hidden="true"></div>
+
+  <noscript>
+    <div class="noscript">
+      <h1>Kevin Natera — Desarrollador Full-Stack</h1>
+      <p>Angular · Flutter · Django REST Framework · PHP/Laravel.</p>
+      <p><a href="mailto:kevinnatera03@gmail.com">kevinnatera03@gmail.com</a> · <a href="tel:+34641041814">+34 641 041 814</a> · <a href="https://github.com/kvnnatera03">GitHub</a> · <a href="https://www.linkedin.com/in/kevin-natera-9b241a243/">LinkedIn</a></p>
+      <p>Activa JavaScript para ver el portafolio interactivo.</p>
+    </div>
+  </noscript>
+
+  <script src="js/data.js"></script>
+  <script src="js/highlight.js"></script>
+  <script src="js/font3x5.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/ide.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
