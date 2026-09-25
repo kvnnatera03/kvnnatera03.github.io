@@ -120,7 +120,7 @@ kbd {
    ESCENARIO
    ========================================================================== */
 #stage { position: fixed; inset: 0; overflow: hidden; }
-#scroll-track { height: 560vh; }
+#scroll-track { height: 280vh; }
 #scene {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2;
   image-rendering: pixelated; image-rendering: crisp-edges; pointer-events: none;
