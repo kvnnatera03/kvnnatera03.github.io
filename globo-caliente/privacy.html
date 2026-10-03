@@ -4,51 +4,386 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Política de privacidad – Globo Caliente</title>
+<meta name="description" content="Política de privacidad de la app Globo Caliente: no recopilamos ni compartimos datos personales.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --ink: #13426F; --muted: #616C8A; --bg: #F9F7F0; --sky: #2E96FF; }
-  body { margin: 0; background: var(--bg); color: var(--ink);
-         font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-  main { max-width: 720px; margin: 0 auto; padding: 40px 20px 64px; }
-  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 4px; }
-  h2 { font-size: 20px; margin: 32px 0 8px; }
-  p, li { color: #2b3a55; }
-  .date { color: var(--muted); margin: 0 0 24px; }
-  a { color: var(--sky); }
+  :root {
+    --ink: #13426F;
+    --text: #34446A;
+    --muted: #616C8A;
+    --sky-top: #3FA9FF;
+    --sky-bottom: #C4E8FF;
+    --sky-pop: #2E96FF;
+    --cloud-shadow: #B9D9F2;
+    --tint: #E8F4FF;
+    --gold: #F6B32B;
+    --red: #EF4C45;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { min-height: 100%; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text);
+    background: linear-gradient(180deg, var(--sky-top) 0%, #7CC6FF 45%, var(--sky-bottom) 100%) fixed;
+    background-color: var(--sky-top);
+    overflow-x: hidden;
+  }
+
+  /* ---------- Cielo: nubes y destellos ---------- */
+  .sky {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .cloud {
+    position: absolute;
+    width: var(--w);
+    opacity: var(--o, 1);
+    animation: drift var(--t, 60s) linear infinite alternate;
+  }
+  .cloud svg { display: block; width: 100%; height: auto; }
+
+  .c1 { --w: 220px; --t: 70s; top: 6%;  left: -40px; --o: .85; }
+  .c2 { --w: 150px; --t: 55s; top: 16%; right: 6%;  --o: .7; }
+  .c3 { --w: 300px; --t: 90s; top: 46%; left: -90px; }
+  .c4 { --w: 260px; --t: 80s; top: 62%; right: -70px; }
+  .c5 { --w: 120px; --t: 50s; top: 34%; right: 22%; --o: .55; }
+
+  @keyframes drift {
+    from { transform: translateX(0); }
+    to   { transform: translateX(48px); }
+  }
+
+  .sparkle {
+    position: absolute;
+    width: var(--s, 18px);
+    height: var(--s, 18px);
+    color: #fff;
+    animation: twinkle 3.2s ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+  }
+  .sparkle.gold { color: var(--gold); }
+  @keyframes twinkle {
+    0%, 100% { opacity: .9; transform: scale(1); }
+    50%      { opacity: .35; transform: scale(.7); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cloud, .sparkle { animation: none; }
+  }
+
+  /* ---------- Contenido ---------- */
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 16px 160px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .logo {
+    width: 104px;
+    height: 104px;
+    border-radius: 30px;
+    border: 5px solid #fff;
+    box-shadow: 0 10px 0 rgba(11, 78, 156, .18), 0 18px 40px rgba(11, 58, 107, .25);
+    display: block;
+    margin: 0 auto 20px;
+    animation: bob 4s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-8px) rotate(2deg); }
+  }
+  @media (prefers-reduced-motion: reduce) { .logo { animation: none; } }
+
+  .app-name {
+    margin: 0 0 6px;
+    font-size: clamp(38px, 9vw, 60px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    -webkit-text-stroke: 10px #fff;
+    paint-order: stroke fill;
+    text-shadow: 4px 6px 0 rgba(11, 78, 156, .55);
+  }
+
+  .pill {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 9px 22px;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 16px;
+    box-shadow: 0 5px 0 rgba(11, 78, 156, .22);
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 32px;
+    padding: 40px 44px 36px;
+    box-shadow: 0 12px 0 var(--cloud-shadow), 0 24px 60px rgba(11, 58, 107, .18);
+  }
+
+  .card h1 {
+    margin: 0 0 4px;
+    font-size: clamp(26px, 5vw, 32px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .date {
+    margin: 0 0 24px;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .summary {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin: 24px 0 8px;
+    padding: 20px 22px;
+    border-radius: 22px;
+    background: var(--tint);
+    color: var(--ink);
+  }
+  .summary .icon {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: var(--sky-pop);
+    display: grid;
+    place-items: center;
+    color: #fff;
+  }
+  .summary p { margin: 0; color: var(--ink); }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0 4px;
+    padding: 0;
+    list-style: none;
+  }
+  .badges li {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 2px solid #DFE5EB;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .badges li::before { content: "✓ "; color: var(--sky-pop); }
+
+  section { margin-top: 30px; }
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  h2::before {
+    content: "";
+    flex: none;
+    width: 14px;
+    height: 17px;
+    border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+    background: var(--dot, var(--red));
+    box-shadow: inset -3px -3px 0 rgba(0, 0, 0, .12);
+  }
+  section:nth-of-type(3n+2) h2 { --dot: var(--sky-pop); }
+  section:nth-of-type(3n)   h2 { --dot: var(--gold); }
+
+  p, li { color: var(--text); }
+  p { margin: 0 0 12px; }
+  strong { color: var(--ink); }
+
+  ul.list { margin: 0; padding-left: 22px; }
+  ul.list li { margin-bottom: 8px; }
+  ul.list li::marker { color: var(--sky-pop); }
+
+  a {
+    color: var(--sky-pop);
+    font-weight: 700;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  footer {
+    margin-top: 28px;
+    text-align: center;
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  /* Banco de nubes al pie */
+  .cloud-bank {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    z-index: 0;
+    pointer-events: none;
+    line-height: 0;
+  }
+  .cloud-bank svg { width: 100%; height: 120px; display: block; }
+
+  @media (max-width: 560px) {
+    body { font-size: 16px; }
+    .page { padding-top: 32px; }
+    .card { padding: 28px 22px 26px; border-radius: 26px; }
+    .summary { padding: 16px; gap: 12px; }
+    .logo { width: 88px; height: 88px; border-radius: 26px; }
+    .app-name { -webkit-text-stroke-width: 8px; }
+    .c3, .c4 { --w: 200px; }
+    .cloud-bank svg { height: 80px; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <h1>Política de privacidad de Globo Caliente</h1>
-  <p class="date">Última actualización: 3 de octubre de 2026</p>
 
-  <p>Esta política explica cómo la aplicación <strong>Globo Caliente</strong> (la "App"), desarrollada por Kevin Natera, trata la información de sus usuarios.</p>
+<!-- Nube reutilizable: bultos redondos + base plana + sombra -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="cloud">
+      <g fill="#B9D9F2" transform="translate(0 9)">
+        <circle cx="40" cy="62" r="26"/><circle cx="84" cy="44" r="36"/><circle cx="132" cy="58" r="28"/><circle cx="164" cy="70" r="18"/>
+        <rect x="10" y="60" width="176" height="36" rx="18"/>
+      </g>
+      <g fill="#fff">
+        <circle cx="40" cy="62" r="26"/><circle cx="84" cy="44" r="36"/><circle cx="132" cy="58" r="28"/><circle cx="164" cy="70" r="18"/>
+        <rect x="10" y="60" width="176" height="36" rx="18"/>
+      </g>
+    </g>
+    <path id="spark" d="M12 0 L15 9 L24 12 L15 15 L12 24 L9 15 L0 12 L9 9 Z" fill="currentColor"/>
+  </defs>
+</svg>
 
-  <h2>Resumen</h2>
-  <p>Globo Caliente <strong>no recopila, no almacena en servidores y no comparte datos personales</strong>. No requiere cuenta, no muestra anuncios y no usa herramientas de analítica ni de seguimiento.</p>
+<div class="sky" aria-hidden="true">
+  <div class="cloud c1"><svg viewBox="0 0 196 106"><use href="#cloud"/></svg></div>
+  <div class="cloud c2"><svg viewBox="0 0 196 106"><use href="#cloud"/></svg></div>
+  <div class="cloud c3"><svg viewBox="0 0 196 106"><use href="#cloud"/></svg></div>
+  <div class="cloud c4"><svg viewBox="0 0 196 106"><use href="#cloud"/></svg></div>
+  <div class="cloud c5"><svg viewBox="0 0 196 106"><use href="#cloud"/></svg></div>
+  <svg class="sparkle" style="top:9%;left:24%;--s:20px" viewBox="0 0 24 24"><use href="#spark"/></svg>
+  <svg class="sparkle gold" style="top:13%;right:30%;--s:16px;--d:.8s" viewBox="0 0 24 24"><use href="#spark"/></svg>
+  <svg class="sparkle" style="top:28%;left:8%;--s:14px;--d:1.6s" viewBox="0 0 24 24"><use href="#spark"/></svg>
+  <svg class="sparkle gold" style="top:40%;right:6%;--s:20px;--d:2.2s" viewBox="0 0 24 24"><use href="#spark"/></svg>
+  <svg class="sparkle" style="top:56%;left:5%;--s:16px;--d:1.1s" viewBox="0 0 24 24"><use href="#spark"/></svg>
+</div>
 
-  <h2>Información que se guarda en tu dispositivo</h2>
-  <p>La App guarda únicamente tu preferencia de duración del juego (el rango de segundos que eliges). Esta información se queda en tu teléfono y nunca se envía a nosotros ni a terceros. Puedes borrarla en cualquier momento eliminando los datos de la App o desinstalándola.</p>
+<div class="cloud-bank" aria-hidden="true">
+  <svg viewBox="0 0 1200 120" preserveAspectRatio="xMidYMax slice">
+    <g fill="#B9D9F2">
+      <circle cx="40" cy="104" r="70"/><circle cx="190" cy="92" r="80"/><circle cx="360" cy="108" r="74"/><circle cx="520" cy="90" r="84"/>
+      <circle cx="690" cy="106" r="72"/><circle cx="850" cy="92" r="82"/><circle cx="1010" cy="104" r="74"/><circle cx="1170" cy="94" r="80"/>
+    </g>
+    <g fill="#fff" transform="translate(0 10)">
+      <circle cx="40" cy="104" r="70"/><circle cx="190" cy="92" r="80"/><circle cx="360" cy="108" r="74"/><circle cx="520" cy="90" r="84"/>
+      <circle cx="690" cy="106" r="72"/><circle cx="850" cy="92" r="82"/><circle cx="1010" cy="104" r="74"/><circle cx="1170" cy="94" r="80"/>
+    </g>
+  </svg>
+</div>
 
-  <h2>Conexión con el globo físico</h2>
-  <p>Si tienes el dispositivo Globo Caliente, la App se comunica con él a través de su red WiFi local para comprobar que está conectado y para activarlo cuando el globo explota en el juego. Esta comunicación ocurre solo dentro de esa red local, no sale a internet y no incluye datos personales.</p>
+<div class="page">
+  <header>
+    <img class="logo" src="logo.png" alt="Icono de Globo Caliente" width="104" height="104">
+    <p class="app-name">Globo Caliente</p>
+    <span class="pill">Política de privacidad</span>
+  </header>
 
-  <h2>Permisos</h2>
-  <ul>
-    <li><strong>Acceso a la red:</strong> necesario únicamente para comunicarse con el globo físico en la red WiFi local.</li>
-    <li><strong>Mantener la pantalla encendida:</strong> evita que la pantalla se apague durante una partida.</li>
-  </ul>
+  <main class="card">
+    <h1>Política de privacidad de Globo Caliente</h1>
+    <p class="date">Última actualización: 3 de octubre de 2026</p>
 
-  <h2>Servicios de terceros</h2>
-  <p>La App no integra servicios de terceros que recopilen información (como anuncios, analítica o inicio de sesión con redes sociales).</p>
+    <p>Esta política explica cómo la aplicación <strong>Globo Caliente</strong> (la "App"), desarrollada por Kevin Natera, trata la información de sus usuarios.</p>
 
-  <h2>Menores de edad</h2>
-  <p>Globo Caliente es un juego de fiesta dirigido a adolescentes y adultos. No está diseñado para menores de 13 años y no recopila a sabiendas información de niños.</p>
+    <div class="summary">
+      <div class="icon" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <p><strong>En resumen:</strong> Globo Caliente <strong>no recopila, no almacena en servidores y no comparte datos personales</strong>. No requiere cuenta, no muestra anuncios y no usa herramientas de analítica ni de seguimiento.</p>
+    </div>
 
-  <h2>Cambios en esta política</h2>
-  <p>Si esta política cambia, publicaremos la versión actualizada en esta misma página con una nueva fecha de actualización.</p>
+    <ul class="badges" aria-label="Lo que no hace la App">
+      <li>Sin cuentas</li>
+      <li>Sin anuncios</li>
+      <li>Sin analítica</li>
+      <li>Sin datos compartidos</li>
+    </ul>
 
-  <h2>Contacto</h2>
-  <p>Si tienes preguntas sobre esta política, escríbenos a <a href="mailto:kevinnatera03@gmail.com">kevinnatera03@gmail.com</a>.</p>
-</main>
+    <section>
+      <h2>Información que se guarda en tu dispositivo</h2>
+      <p>La App guarda únicamente tu preferencia de duración del juego (el rango de segundos que eliges). Esta información se queda en tu teléfono y nunca se envía a nosotros ni a terceros. Puedes borrarla en cualquier momento eliminando los datos de la App o desinstalándola.</p>
+    </section>
+
+    <section>
+      <h2>Conexión con el globo físico</h2>
+      <p>Si tienes el dispositivo Globo Caliente, la App se comunica con él a través de su red WiFi local para comprobar que está conectado y para activarlo cuando el globo explota en el juego. Esta comunicación ocurre solo dentro de esa red local, no sale a internet y no incluye datos personales.</p>
+    </section>
+
+    <section>
+      <h2>Permisos</h2>
+      <ul class="list">
+        <li><strong>Acceso a la red:</strong> necesario únicamente para comunicarse con el globo físico en la red WiFi local.</li>
+        <li><strong>Mantener la pantalla encendida:</strong> evita que la pantalla se apague durante una partida.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Servicios de terceros</h2>
+      <p>La App no integra servicios de terceros que recopilen información (como anuncios, analítica o inicio de sesión con redes sociales).</p>
+    </section>
+
+    <section>
+      <h2>Menores de edad</h2>
+      <p>Globo Caliente es un juego de fiesta dirigido a adolescentes y adultos. No está diseñado para menores de 13 años y no recopila a sabiendas información de niños.</p>
+    </section>
+
+    <section>
+      <h2>Cambios en esta política</h2>
+      <p>Si esta política cambia, publicaremos la versión actualizada en esta misma página con una nueva fecha de actualización.</p>
+    </section>
+
+    <section>
+      <h2>Contacto</h2>
+      <p>Si tienes preguntas sobre esta política, escríbenos a <a href="mailto:kevinnatera03@gmail.com">kevinnatera03@gmail.com</a>.</p>
+    </section>
+  </main>
+
+  <footer>© 2026 Globo Caliente · ¡Pásalo antes de que explote! 🎈</footer>
+</div>
+
 </body>
 </html>
